@@ -1,0 +1,48 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.0.M5'
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.greglturnquist.learningspringboot'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-webflux')
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.0.3.RELEASE'
+	compile("org.springframework.boot:spring-boot-devtools")
+
+	compile('org.synchronoss.cloud:nio-multipart-parser:1.1.0')
+	compileOnly('org.projectlombok:lombok')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+	testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-beta2'
+
+//	compile('org.springframework.boot:spring-boot-starter-actuator')
+//	compile('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
+//	compile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
+
+	testCompile('io.projectreactor:reactor-test')
+}
