@@ -7,7 +7,7 @@ logging:
 
 
 resources:
-  projectroot: "/Users/i841059/Desktop/Springboot Book/gettingStarted"
+  projectroot: "/Users/i841059/Desktop/reactiveJava"
 
 spring:
   thymeleaf:
