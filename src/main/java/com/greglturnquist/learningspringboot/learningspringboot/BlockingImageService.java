@@ -29,6 +29,11 @@ public class BlockingImageService {
 
     public void createImage(List<FilePart> files) {
         imageService.createImage(Flux.fromIterable(files))
+                .block(Duration.ofMinutes(1));
+    }
+
+    public void deleteImage(String filename) {
+        imageService.deleteImage(filename)
                 .block(Duration.ofMillis(1));
     }
 }

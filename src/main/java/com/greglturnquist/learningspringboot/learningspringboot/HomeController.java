@@ -7,12 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,10 +27,26 @@ public class HomeController {
     }
 
 
+    /**
+     * addAttribute() lets us assign the image service's findAllImages() Flux to the
+     * template model's images attribute.
+     * The method returns "index" wrapped in a Mono, ensuring the whole thing is
+     * chained together, top to bottom, to kick off when Spring WebFlux subscribes to
+     * render the template.
+     *
+     * @param model
+     * @return
+     */
     @GetMapping("/")
     public Mono<String> index(Model model) {
         model.addAttribute("images", imageService.findAllImages());
         return Mono.just("index");
+    }
+
+    @RequestMapping("/greeting")
+    @ResponseBody
+    public String greeting(@RequestParam(required = false, defaultValue = "") String name) {
+        return name.isEmpty() ? "Hey" : "Hey " + name + "!";
     }
 
     @GetMapping(value = BASE_PATH + "/" + FILENAME + "/raw", produces = MediaType.IMAGE_JPEG_VALUE)
@@ -55,12 +66,30 @@ public class HomeController {
                 });
     }
 
+    /**
+     *
+     * A collection of incoming FilePart objects is represented as a Flux
+     * The flux of files is handed directly to the image service to be processed
+     * .then() indicates that once the method is complete, it will then return a
+     * redirect:/ directive (wrapped in a Mono), issuing an HTML redirect to /
+     *
+     */
     @PostMapping(value = BASE_PATH)
     public Mono<String> createFile(@RequestParam(name = "file") Flux<FilePart> files) {
         return imageService.createImage(files)
                 .then(Mono.just("redirect:/"));
     }
 
+    /**
+     * Using Spring's @DeleteMapping annotation, this method is ready for HTTP DELETE
+     * operations
+     * It's keyed to the same BASE_PATH + "/" + FILENAME pattern
+     * It taps the image service's deleteImage() method
+     * It uses then() to wait until the delete is done before returning back a monowrapped redirect:/ directive
+     *
+     * @param filename
+     * @return
+     */
     @DeleteMapping(BASE_PATH + "/" + FILENAME)
     public Mono<String> deleteFile(@PathVariable String filename) {
         return imageService.deleteImage(filename)

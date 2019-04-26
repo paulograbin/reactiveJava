@@ -8,6 +8,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Image {
 
+    /**
+     * @Data is a Lombok annotation that generates getters, toString, hashCode, equals as
+     * well as setters for all non-final fields
+     * @NoArgsConstructor is a Lombok annotation to generate a no-argument
+     * constructor
+     * It has id and name fields for storing data
+     * We have crafted a custom constructor to load up fields of data
+     */
+
     private int id;
     private String name;
 

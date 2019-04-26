@@ -22,8 +22,8 @@ import java.nio.file.Paths;
 public class ImageService {
 
     private static String UPLOAD_ROOT = "upload-dir";
-
     private final ResourceLoader resourceLoader;
+
 
     public ImageService(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
@@ -34,8 +34,7 @@ public class ImageService {
             return Flux.fromIterable(
                     Files.newDirectoryStream(Paths.get(UPLOAD_ROOT)))
                     .map(path ->
-                    new Image(path.hashCode(),
-                            path.getFileName().toString()));
+                            new Image(path.hashCode(), path.getFileName().toString()));
         } catch (IOException e) {
             e.printStackTrace();
             return Flux.empty();
@@ -44,12 +43,14 @@ public class ImageService {
 
     public Mono<Resource> findOneImage(String filename) {
         return Mono.fromSupplier(() ->
-        resourceLoader.getResource("file:" + UPLOAD_ROOT + "/" + filename));
+                resourceLoader.getResource("file:" + UPLOAD_ROOT + "/" + filename));
     }
 
     public Mono<Void> createImage(Flux<FilePart> files) {
-        return files.flatMap(file -> file.transferTo(
-                Paths.get(UPLOAD_ROOT, file.filename()).toFile())).then();
+        return files.flatMap(file ->
+                    file.transferTo(Paths.get(UPLOAD_ROOT, file.filename()).toFile())
+                )
+                .then();
     }
 
     public Mono<Void> deleteImage(String filename) {
@@ -63,8 +64,8 @@ public class ImageService {
     }
 
     @Bean
-    CommandLineRunner setUp() throws IOException {
-        return (args) -> {
+    CommandLineRunner setUp() {
+        return args -> {
             FileSystemUtils.deleteRecursively(new File(UPLOAD_ROOT));
             Files.createDirectory(Paths.get(UPLOAD_ROOT));
 
