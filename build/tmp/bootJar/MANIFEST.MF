@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Start-Class: com.greglturnquist.learningspringboot.learningspringboot.
- LearningSpringBootApplication
-Main-Class: org.springframework.boot.loader.JarLauncher
-
