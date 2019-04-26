@@ -24,21 +24,16 @@ public class ImageService {
     private static String UPLOAD_ROOT = "upload-dir";
     private final ResourceLoader resourceLoader;
 
+    private ImageRepository imageRepository;
 
-    public ImageService(ResourceLoader resourceLoader) {
+
+    public ImageService(ResourceLoader resourceLoader, ImageRepository imageRepository) {
         this.resourceLoader = resourceLoader;
+        this.imageRepository = imageRepository;
     }
 
     public Flux<Image> findAllImages() {
-        try {
-            return Flux.fromIterable(
-                    Files.newDirectoryStream(Paths.get(UPLOAD_ROOT)))
-                    .map(path ->
-                            new Image(path.hashCode(), path.getFileName().toString()));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Flux.empty();
-        }
+        return imageRepository.findAll();
     }
 
     public Mono<Resource> findOneImage(String filename) {
