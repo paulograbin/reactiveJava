@@ -1,10 +1,24 @@
 logging:
   level:
     io:
-      netty: INFO
-      tomcat: INFO
-    reactor: INFO
+      netty: DEBUG
+      tomcat: DEBUG
+    reactor: DEBUG
 
+
+endpoints:
+  health:
+    enabled: true
+  autoconfig:
+    enabled: true
+  beans:
+    enabled: true
+  env:
+    enabled: true
+  info:
+    enabled: true
+  mappings:
+    enabled: true
 
 resources:
   projectroot: "/Users/i841059/Desktop/reactiveJava"
