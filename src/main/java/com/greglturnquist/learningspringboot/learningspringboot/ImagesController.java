@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
+
+import javax.annotation.Resource;
 
 
 @RestController
@@ -17,6 +20,8 @@ public class ImagesController {
 
     private static final String API_BASE_PATH = "api";
 
+    @Resource
+    ImageService imageService;
 
     /**
      * Using the same Flux.just() helper, we return a rather contrived list
@@ -25,11 +30,16 @@ public class ImagesController {
      */
     @GetMapping(API_BASE_PATH + "/images")
     Flux<Image> images() {
-        return Flux.just(
-                new Image(1, "learning-spring-boot-edition-cover.jpg"),
-                new Image(2, "learning-spring-boot-2nd-edition-cover.jpg"),
-                new Image(3, "bazinga.jpg")
-        );
+        Hooks.onOperatorDebug();
+
+        return imageService.findAllImages();
+
+
+//        return Flux.just(
+//                new Image("1", "learning-spring-boot-edition-cover.jpg"),
+//                new Image("2", "learning-spring-boot-2nd-edition-cover.jpg"),
+//                new Image("3", "bazinga.jpg")
+//        );
     }
 
     /**
