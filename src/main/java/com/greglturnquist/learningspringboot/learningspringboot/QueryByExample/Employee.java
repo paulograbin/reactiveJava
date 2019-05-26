@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package com.greglturnquist.learningspringboot.learningspringboot.QueryByExample;
+=======
+package com.greglturnquist.learningspringboot.learningspringboot.Example;
+>>>>>>> 752a64f510a4c4182f346aefc94620d5396b1766
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -9,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Employee {
 
+<<<<<<< HEAD
 
     /**
      *
@@ -23,6 +28,10 @@ public class Employee {
 
     @Id
     private String id;
+=======
+    @Id
+    private String idl;
+>>>>>>> 752a64f510a4c4182f346aefc94620d5396b1766
     private String lastName;
     private String firstName;
     private String role;
