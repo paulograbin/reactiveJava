@@ -41,11 +41,41 @@ public class ImageService {
                 resourceLoader.getResource("file:" + UPLOAD_ROOT + "/" + filename));
     }
 
+    /**
+     * With a Flux of multipart files, flatMap each one into two independent actions:
+     * saving the image and copying the file to the server.
+     * Using imageRepository, put together a Mono that stores the image in MongoDB,
+     * using UUID to create a unique key and the filename.
+     * Using FilePart, WebFlux's reactive multipart API, build another Mono that copies
+     * the file to the server.
+     * To ensure both of these operations are completed, join them together using
+     * Mono.when(). This means that each file won't be completed until the record is
+     * written to MongoDB and the file is copied to the server.
+     * The entire flow is terminated with then() so we can signal when all the files
+     * have been processed.
+     */
     public Mono<Void> createImage(Flux<FilePart> files) {
-        return files.flatMap(file ->
-                    file.transferTo(Paths.get(UPLOAD_ROOT, file.filename()).toFile())
-                )
-                .then();
+        return files
+                .flatMap(file -> {
+                    Mono<Image> saveDatabaseImage = imageRepository.save(
+                            new Image(UUID.randomUUID().toString(), file.filename()));
+
+                    Mono<Void> copyFile = Mono.just(
+                            Paths.get(UPLOAD_ROOT, file.filename()).toFile()).log("createImage-picktarget")
+                            .map(destFile -> {
+                                try {
+                                    destFile.createNewFile();
+                                    return destFile;
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            })
+                            .log("createImage-newFile")
+                            .flatMap(file::transferTo)
+                            .log("createImage-copy");
+
+                    return Mono.when(saveDatabaseImage, copyFile);
+                }).then();
     }
 
     public Mono<Void> deleteImage(String filename) {
