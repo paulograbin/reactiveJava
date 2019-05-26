@@ -1,10 +1,17 @@
+#logging:
+#  level:
+#    io:
+#      netty: DEBUG
+#      tomcat: DEBUG
+#    reactor: DEBUG
+
+
 logging:
   level:
-    io:
-      netty: DEBUG
-      tomcat: DEBUG
-    reactor: DEBUG
-
+    com.greglturnquist=DEBUG
+    org.springframework.data=TRACE
+    reactor.core=TRACE
+    reactor.util=TRACE
 
 endpoints:
   health:
