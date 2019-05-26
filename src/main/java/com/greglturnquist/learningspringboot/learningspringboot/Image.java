@@ -1,11 +1,12 @@
 package com.greglturnquist.learningspringboot.learningspringboot;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Data
-@NoArgsConstructor
+@Document
 public class Image {
 
     /**
@@ -17,27 +18,12 @@ public class Image {
      * We have crafted a custom constructor to load up fields of data
      */
 
-    private int id;
+    @Id
+    private String id;
     private String name;
 
-    public Image(int id, String name) {
+    public Image(String id, String name) {
         this.id = id;
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 }
