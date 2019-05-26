@@ -16,15 +16,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 
 @Service
 public class ImageService {
 
     private static String UPLOAD_ROOT = "upload-dir";
-    private final ResourceLoader resourceLoader;
 
-    private ImageRepository imageRepository;
+    private final ResourceLoader resourceLoader;
+    private final ImageRepository imageRepository;
 
 
     public ImageService(ResourceLoader resourceLoader, ImageRepository imageRepository) {
@@ -32,13 +33,20 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
+    /**
+     * It's good to remember that the Flux of images being returned is lazy. That means that
+     only the number of images requested by the client is pulled from the database into
+     memory and through the rest of the system at any given time. In essence, the client
+     can ask for one or as many as possible, and the database, thanks to reactive drivers,
+     will comply.
+     */
     public Flux<Image> findAllImages() {
-        return imageRepository.findAll();
+        return imageRepository.findAll().log("findAll");
     }
 
     public Mono<Resource> findOneImage(String filename) {
         return Mono.fromSupplier(() ->
-                resourceLoader.getResource("file:" + UPLOAD_ROOT + "/" + filename));
+                resourceLoader.getResource("file:" + UPLOAD_ROOT + "/" + filename)).log("findOne");
     }
 
     /**
