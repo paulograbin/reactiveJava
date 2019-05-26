@@ -49,13 +49,17 @@ public class ImageService {
     }
 
     public Mono<Void> deleteImage(String filename) {
-        return Mono.fromRunnable(() -> {
+        Mono<Void> deleteDatabaseImage = imageRepository.findByName(filename).flatMap(imageRepository::delete);
+
+        Mono<Void> deleteFile = Mono.fromRunnable(() -> {
             try {
                 Files.deleteIfExists(Paths.get(UPLOAD_ROOT, filename));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException();
             }
         });
+
+        return Mono.when(deleteDatabaseImage, deleteFile).then();
     }
 
     @Bean
