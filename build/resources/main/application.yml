@@ -5,6 +5,19 @@ logging:
       tomcat: INFO
     reactor: DEBUG
 
+endpoints:
+  health:
+    enabled: true
+  autoconfig:
+    enabled: true
+  beans:
+    enabled: true
+  env:
+    enabled: true
+  info:
+    enabled: true
+  mappings:
+    enabled: true
 
 resources:
   projectroot: "/Users/i841059/Desktop/Springboot Book/gettingStarted"
