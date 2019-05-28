@@ -1,4 +1,4 @@
-package com.greglturnquist.learningspringboot.learningspringboot.QueryByExample;
+package com.greglturnquist.learningspringboot.learningspringboot.MongoTemplate;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

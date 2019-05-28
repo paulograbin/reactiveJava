@@ -1,6 +1,5 @@
 package com.greglturnquist.learningspringboot.learningspringboot.MongoTemplate;
 
-import com.greglturnquist.learningspringboot.learningspringboot.QueryByExample.Employee;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;

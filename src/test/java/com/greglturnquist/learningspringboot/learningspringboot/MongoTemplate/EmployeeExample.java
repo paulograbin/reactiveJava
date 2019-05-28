@@ -1,4 +1,4 @@
-package com.greglturnquist.learningspringboot.learningspringboot.QueryByExample;
+package com.greglturnquist.learningspringboot.learningspringboot.MongoTemplate;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -15,7 +15,7 @@ import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatc
 public class EmployeeExample {
 
     @Resource
-    private EmployeeRepo employeeRepository;
+    private EmployeeRepository employeeRepository;
 
     @Resource
     private MongoOperations mongoOperations;
