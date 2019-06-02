@@ -64,9 +64,11 @@ public class ImageService {
      */
     public Mono<Void> createImage(Flux<FilePart> files) {
         return files
+                .log("createImage-files")
                 .flatMap(file -> {
                     Mono<Image> saveDatabaseImage = imageRepository.save(
-                            new Image(UUID.randomUUID().toString(), file.filename()));
+                            new Image(UUID.randomUUID().toString(), file.filename()))
+                            .log("createImage-save");
 
                     Mono<Void> copyFile = Mono.just(
                             Paths.get(UPLOAD_ROOT, file.filename()).toFile()).log("createImage-picktarget")
@@ -87,17 +89,21 @@ public class ImageService {
     }
 
     public Mono<Void> deleteImage(String filename) {
-        Mono<Void> deleteDatabaseImage = imageRepository.findByName(filename).flatMap(imageRepository::delete);
+        Mono<Void> deleteDatabaseImage = imageRepository.findByName(filename).log("deleteImage-find")
+                .flatMap(imageRepository::delete).log("deleteImage-record");
 
-        Mono<Void> deleteFile = Mono.fromRunnable(() -> {
+        Mono<Object> deleteFile = Mono.fromRunnable(() -> {
             try {
                 Files.deleteIfExists(Paths.get(UPLOAD_ROOT, filename));
             } catch (IOException e) {
                 throw new RuntimeException();
             }
-        });
+        }).log("deleteImage-file");
 
-        return Mono.when(deleteDatabaseImage, deleteFile).then();
+        return Mono.when(deleteDatabaseImage, deleteFile)
+                .log("deleteImage-when")
+                .then()
+                .log("deleteImage-Done");
     }
 
     @Bean
