@@ -18,7 +18,7 @@ public class ImagesController {
 
     private static Logger log = LoggerFactory.getLogger(ImagesController.class);
 
-    private static final String API_BASE_PATH = "api";
+    private static final String API_BASE_PATH = "/api";
 
     @Resource
     ImageService imageService;
