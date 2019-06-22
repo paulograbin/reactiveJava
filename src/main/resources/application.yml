@@ -1,11 +1,3 @@
-#logging:
-#  level:
-#    io:
-#      netty: DEBUG
-#      tomcat: DEBUG
-#    reactor: DEBUG
-
-
 logging:
   level:
     com.greglturnquist=DEBUG
@@ -14,6 +6,10 @@ logging:
     reactor.util=TRACE
 
 endpoints:
+  httptrace:
+    enabled: true
+  loggers:
+    enabled: true
   health:
     enabled: true
   autoconfig:
@@ -26,6 +22,15 @@ endpoints:
     enabled: true
   mappings:
     enabled: true
+  metrics:
+    enabled: true
+
+
+management:
+  endpoints.enabled-by-default: true
+  info:
+    git:
+      mode: full
 
 resources:
   projectroot: "/Users/i841059/Desktop/reactiveJava"
@@ -34,3 +39,6 @@ spring:
   thymeleaf:
     cache: false
     prefix: file:///${resources.projectroot}/src/main/resources/templates/
+  devtools:
+    remote:
+      secret: learning-spring-boot

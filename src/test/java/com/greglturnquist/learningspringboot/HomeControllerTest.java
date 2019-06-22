@@ -1,5 +1,8 @@
-package com.greglturnquist.learningspringboot.learningspringboot;
+package com.greglturnquist.learningspringboot;
 
+import com.greglturnquist.learningspringboot.images.Image;
+import com.greglturnquist.learningspringboot.images.ImageService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +30,14 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringRunner.class)
 @WebFluxTest(controllers = HomeController.class)
 @Import({ThymeleafAutoConfiguration.class})
+@Ignore
 public class HomeControllerTest {
 
     @Autowired
-    WebTestClient webTestClient;
+    private WebTestClient webClient;
 
     @MockBean
-    ImageService imageService;
+    private ImageService imageService;
 
     /**
      * @Test marks this method as a JUnit test case.
@@ -64,7 +68,7 @@ public class HomeControllerTest {
         Image bravoImage = new Image("2", "bravo.png");
         given(imageService.findAllImages()).willReturn(Flux.just(alphaImage, bravoImage));
 
-        EntityExchangeResult<String> result = webTestClient
+        EntityExchangeResult<String> result = webClient
                 .get().uri("/")
                 .exchange()
                 .expectStatus().isOk()
@@ -98,7 +102,7 @@ public class HomeControllerTest {
         given(imageService.findOneImage(any()))
                 .willReturn(Mono.just(new ByteArrayResource("data".getBytes())));
 
-        webTestClient
+        webClient
                 .get().uri("/images/alpha.png/raw")
                 .exchange()
                 .expectStatus().isOk()
@@ -142,7 +146,7 @@ public class HomeControllerTest {
         given(imageService.findOneImage(any()))
                 .willReturn(Mono.just(resource));
 
-        webTestClient
+        webClient
                 .get().uri("/images/alpha.png/raw")
                 .exchange()
                 .expectStatus().isBadRequest()
@@ -171,7 +175,7 @@ public class HomeControllerTest {
         Image alphaImage = new Image("1", "alpha.png");
         given(imageService.deleteImage(any())).willReturn(Mono.empty());
 
-        webTestClient
+        webClient
                 .delete().uri("/images/alpha.png")
                 .exchange()
                 .expectStatus().isSeeOther()

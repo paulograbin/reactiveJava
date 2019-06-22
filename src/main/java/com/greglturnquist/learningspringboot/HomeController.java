@@ -1,6 +1,7 @@
-package com.greglturnquist.learningspringboot.learningspringboot;
+package com.greglturnquist.learningspringboot;
 
-
+import com.greglturnquist.learningspringboot.comments.CommentReaderRepository;
+import com.greglturnquist.learningspringboot.images.ImageService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.HashMap;
+
 
 @Controller
 public class HomeController {
@@ -21,9 +24,11 @@ public class HomeController {
     private static final String FILENAME = "{filename:.+}";
 
     private final ImageService imageService;
+    private final CommentReaderRepository commentRepository;
 
-    public HomeController(ImageService imageService) {
+    public HomeController(ImageService imageService, CommentReaderRepository commentRepository) {
         this.imageService = imageService;
+        this.commentRepository = commentRepository;
     }
 
 
@@ -39,7 +44,18 @@ public class HomeController {
      */
     @GetMapping("/")
     public Mono<String> index(Model model) {
-        model.addAttribute("images", imageService.findAllImages());
+        model.addAttribute("images", imageService.findAllImages()
+                .flatMap(image ->
+                        Mono.just(image)
+                        .zipWith(commentRepository.findByImageId(image.getId()).collectList())
+                )
+                .map(imageAndComments -> new HashMap<String, Object>(){{
+                    put("id", imageAndComments.getT1().getId());
+                    put("name", imageAndComments.getT1().getName());
+                    put("comments", imageAndComments.getT2());
+        }}));
+
+        model.addAttribute("extra", "DevTools can also detect code changes too.");
         return Mono.just("index");
     }
 

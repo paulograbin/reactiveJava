@@ -1,5 +1,6 @@
-package com.greglturnquist.learningspringboot.learningspringboot.webdriver;
+package com.greglturnquist.learningspringboot.webdriver;
 
+import com.greglturnquist.learningspringboot.learningspringboot.webdriver.SafariDriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -27,14 +28,14 @@ public class WebDriverAutoConfiguration {
             SafariDriverFactory safariDriverFactory,
             ChromeDriverFactory chromeDriverFactory
     ) {
-        WebDriver driver = firefoxDriverFactory.getObject();
+        WebDriver driver = chromeDriverFactory.getObject();
 
         if (driver == null) {
             driver = safariDriverFactory.getObject();
         }
 
         if (driver == null) {
-            driver = chromeDriverFactory.getObject();
+            driver = firefoxDriverFactory.getObject();
         }
 
         if (driver == null) {

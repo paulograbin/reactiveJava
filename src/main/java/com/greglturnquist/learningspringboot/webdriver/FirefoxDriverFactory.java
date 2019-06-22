@@ -1,4 +1,4 @@
-package com.greglturnquist.learningspringboot.learningspringboot.webdriver;
+package com.greglturnquist.learningspringboot.webdriver;
 
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxDriver;

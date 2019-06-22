@@ -8,6 +8,8 @@
 <body>
 
 <h1>Learning Spring Boot - 2nd Edition</h1>
+<h3>Using LiveReload plugin in your browser will speed up efforts.</h3>
+<h4 th:text="${extra}"></h4>
 
 <div>
     <table>
@@ -17,7 +19,6 @@
         </tr>
         </thead>
         <tbody>
-
             <tr th:each="image : ${images}">
                 <td th:text="${image.id}"></td>
                 <td th:text="${image.name}"></td>
@@ -31,11 +32,25 @@
                         <input type="submit" value="Delete">
                     </form>
                 </td>
+                <td>
+                    <ul>
+                        <li th:each="comment : ${image.comments}"
+                            th:text="${comment.comment}">
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <form th:method="post" th:action="@{'/comments'}">
+                        <input name="comment" value="" type="text"/>
+                        <input name="imageId" th:value="${image.id}" type="hidden"/>
+                        <input type="submit"/>
+                    </form>
+                </td>
             </tr>
-
-
         </tbody>
     </table>
+
+
 
     <form method="post" enctype="multipart/form-data" action="/images">
         <p><input type="file" name="file"/> </p>

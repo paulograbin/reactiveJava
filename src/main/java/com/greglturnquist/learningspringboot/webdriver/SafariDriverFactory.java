@@ -1,12 +1,12 @@
-package com.greglturnquist.learningspringboot.learningspringboot.webdriver;
+package com.greglturnquist.learningspringboot.webdriver;
 
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 
 
-public class SafariDriverFactory implements ObjectFactory<FirefoxDriver> {
+public class SafariDriverFactory implements ObjectFactory<SafariDriver> {
 
     private WebDriverConfigurationProperties properties;
 
@@ -15,10 +15,10 @@ public class SafariDriverFactory implements ObjectFactory<FirefoxDriver> {
     }
 
     @Override
-    public FirefoxDriver getObject() throws BeansException {
+    public SafariDriver getObject() throws BeansException {
         if(properties.getFirefox().isEnabled()) {
             try {
-                return new FirefoxDriver();
+                return new SafariDriver();
             } catch (WebDriverException e) {
                 e.printStackTrace();
             }

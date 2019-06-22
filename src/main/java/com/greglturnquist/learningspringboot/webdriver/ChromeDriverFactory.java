@@ -1,5 +1,6 @@
-package com.greglturnquist.learningspringboot.learningspringboot.webdriver;
+package com.greglturnquist.learningspringboot.webdriver;
 
+import com.greglturnquist.learningspringboot.webdriver.WebDriverConfigurationProperties;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.beans.BeansException;
@@ -16,7 +17,7 @@ public class ChromeDriverFactory implements ObjectFactory<FirefoxDriver> {
 
     @Override
     public FirefoxDriver getObject() throws BeansException {
-        if(properties.getFirefox().isEnabled()) {
+        if(properties.getChrome().isEnabled()) {
             try {
                 return new FirefoxDriver();
             } catch (WebDriverException e) {

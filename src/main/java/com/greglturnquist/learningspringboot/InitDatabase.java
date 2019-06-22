@@ -1,5 +1,6 @@
-package com.greglturnquist.learningspringboot.learningspringboot;
+package com.greglturnquist.learningspringboot;
 
+import com.greglturnquist.learningspringboot.images.Image;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -21,7 +22,7 @@ public class InitDatabase {
      * out
      */
     @Bean
-    CommandLineRunner init(MongoOperations mongoOperations) {
+    public CommandLineRunner init(MongoOperations mongoOperations) {
         return args -> {
             mongoOperations.dropCollection(Image.class);
 

@@ -1,7 +1,7 @@
-package com.greglturnquist.learningspringboot.learningspringboot;
+package com.greglturnquist.learningspringboot;
 
-import com.greglturnquist.learningspringboot.learningspringboot.webdriver.FirefoxDriverFactory;
-import com.greglturnquist.learningspringboot.learningspringboot.webdriver.WebDriverAutoConfiguration;
+import com.greglturnquist.learningspringboot.webdriver.FirefoxDriverFactory;
+import com.greglturnquist.learningspringboot.webdriver.WebDriverAutoConfiguration;
 import org.junit.After;
 import org.junit.Test;
 import org.openqa.selenium.TakesScreenshot;
@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.boot.test.util.EnvironmentTestUtils;
+import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,6 +60,7 @@ public class WebDriverAutoConfigurationTests {
         }
 
         EnvironmentTestUtils.addEnvironment(applicationContext, environment);
+
         applicationContext.refresh();
         this.context = applicationContext;
     }

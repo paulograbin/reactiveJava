@@ -1,5 +1,6 @@
-package com.greglturnquist.learningspringboot.learningspringboot;
+package com.greglturnquist.learningspringboot;
 
+import com.greglturnquist.learningspringboot.images.Image;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,6 +1,7 @@
 buildscript {
 	ext {
 		springBootVersion = '2.0.0.M5'
+		springCloudVersion = 'Finchley.M3'
 	}
 	repositories {
 		mavenCentral()
@@ -12,8 +13,17 @@ buildscript {
 	}
 }
 
+plugins {
+	id "com.gorylenko.gradle-git-properties" version "1.4.17"
+//	id "io.spring.dependency-management" version "1.0.6.RELEASE"
+}
+
+//springBoot {
+//	buildInfo()
+//}
+
 apply plugin: 'java'
-apply plugin: 'eclipse'
+//apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -27,11 +37,17 @@ repositories {
 	maven { url "https://repo.spring.io/snapshot" }
 	maven { url "https://repo.spring.io/milestone" }
 	maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+	maven { url "https://dl.bintray.com/rabbitmq/maven-milestones/" }
 }
 
 dependencies {
 	compile("org.springframework.boot:spring-boot-devtools")
-	
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.1.5.RELEASE'
+
+//	compile('org.springframework.boot:spring-boot-starter-amqp')
+	compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
+	compile('org.springframework.cloud:spring-cloud-stream-reactive')
+
 	compile('org.springframework.boot:spring-boot-starter-webflux')
 	compile('org.synchronoss.cloud:nio-multipart-parser:1.1.0')
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
@@ -44,4 +60,10 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('io.projectreactor:reactor-test')
 	testCompile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
