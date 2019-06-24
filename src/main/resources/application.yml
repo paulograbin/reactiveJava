@@ -5,6 +5,17 @@ logging:
     reactor.core=TRACE
     reactor.util=TRACE
 
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: learning-spring-boot-comments
+          group: learning-spring-boot
+        output:
+          destination: learning-spring-boot-comments
+          group: learning-spring-boot
+
 endpoints:
   httptrace:
     enabled: true
