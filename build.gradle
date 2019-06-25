@@ -40,6 +40,13 @@ repositories {
 	maven { url "https://dl.bintray.com/rabbitmq/maven-milestones/" }
 }
 
+configurations {
+	all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+//	all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-validation'
+	all*.exclude group: 'org.springframework', module: 'spring-webmvc'
+}
+// end::exclude-tomcat[
+
 dependencies {
 	compile("org.springframework.boot:spring-boot-devtools")
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.1.5.RELEASE'
@@ -54,9 +61,11 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
 	compile('org.projectlombok:lombok')
 
-	compile("org.seleniumhq.selenium:htmlunit-driver")
-	compile("org.seleniumhq.selenium:selenium-java")
-	
+	compile group: 'org.seleniumhq.selenium', name: 'htmlunit-driver', version: '2.35.1'
+	compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+
+	compile 'com.google.guava:guava:27.0.1-jre'
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('io.projectreactor:reactor-test')
 	testCompile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')

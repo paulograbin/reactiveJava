@@ -1,11 +1,17 @@
 logging:
   level:
-    com.greglturnquist=DEBUG
-    org.springframework.data=TRACE
-    reactor.core=TRACE
-    reactor.util=TRACE
+    org:
+      springframework:
+        cloud: DEBUG
+        integration: DEBUG
 
 spring:
+  thymeleaf:
+    cache: false
+    prefix: file:///${resources.projectroot}/src/main/resources/templates/
+  devtools:
+    remote:
+      secret: learning-spring-boot
   cloud:
     stream:
       bindings:
@@ -45,11 +51,3 @@ management:
 
 resources:
   projectroot: "/Users/i841059/Desktop/reactiveJava"
-
-spring:
-  thymeleaf:
-    cache: false
-    prefix: file:///${resources.projectroot}/src/main/resources/templates/
-  devtools:
-    remote:
-      secret: learning-spring-boot

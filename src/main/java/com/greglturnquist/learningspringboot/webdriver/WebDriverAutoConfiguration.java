@@ -19,6 +19,9 @@ import static org.openqa.selenium.chrome.ChromeDriverService.createDefaultServic
 @Import({ChromeDriverFactory.class, FirefoxDriverFactory.class, SafariDriverFactory.class})
 public class WebDriverAutoConfiguration {
 
+//    @Autowired
+//    WebDriverConfigurationProperties properties;
+
     @Primary
     @Bean(destroyMethod = "quit")
     @ConditionalOnMissingBean(WebDriver.class)
@@ -42,5 +45,13 @@ public class WebDriverAutoConfiguration {
         }
 
         return driver;
+    }
+
+    @Bean(destroyMethod = "stop")
+    @Lazy
+    public ChromeDriverService chromeDriverService() {
+        System.setProperty("webdriver.chrome.driver",
+                "ext/chromedriver");
+        return createDefaultService();
     }
 }

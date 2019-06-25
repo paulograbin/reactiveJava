@@ -44,7 +44,7 @@ public class ImageService {
      will comply.
      */
     public Flux<Image> findAllImages() {
-        final Flux<Image> findAll = imageRepository.findAll().log("findAll");
+        final Flux<Image> findAll = imageRepository.findAll();//.log("findAll");
 
         meterRegistry.summary("images.returned").record(findAll.count().block());
 
@@ -53,7 +53,7 @@ public class ImageService {
 
     public Mono<Resource> findOneImage(String filename) {
         return Mono.fromSupplier(() ->
-                resourceLoader.getResource("file:" + UPLOAD_ROOT + "/" + filename)).log("findOne");
+                resourceLoader.getResource("file:" + UPLOAD_ROOT + "/" + filename));//.log("findOne");
     }
 
     /**
