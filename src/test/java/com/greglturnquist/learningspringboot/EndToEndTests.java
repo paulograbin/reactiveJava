@@ -2,6 +2,7 @@ package com.greglturnquist.learningspringboot;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
@@ -28,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
+@Ignore
 public class EndToEndTests {
 
     static ChromeDriverService service;
