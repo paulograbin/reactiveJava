@@ -4,3 +4,6 @@ jdk:
 
 before_script:
   - chmod a+x gradlew
+
+services:
+  - mongodb
