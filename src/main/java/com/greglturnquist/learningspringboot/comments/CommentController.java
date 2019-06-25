@@ -44,7 +44,7 @@ public class CommentController {
                 .autoConnect();
     }
 
-    @PostMapping("/comment")
+    @PostMapping("/comments")
     public Mono<String> addComment(Mono<Comment> newComment) {
         if (commentSink != null) {
             return newComment
