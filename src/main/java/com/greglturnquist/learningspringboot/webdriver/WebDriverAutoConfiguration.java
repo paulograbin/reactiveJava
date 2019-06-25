@@ -1,15 +1,14 @@
 package com.greglturnquist.learningspringboot.webdriver;
 
-import com.greglturnquist.learningspringboot.learningspringboot.webdriver.SafariDriverFactory;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
+
+import static org.openqa.selenium.chrome.ChromeDriverService.createDefaultService;
 
 
 @Configuration
