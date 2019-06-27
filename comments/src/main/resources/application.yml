@@ -1,0 +1,43 @@
+logging:
+  level:
+    org:
+      springframework:
+        cloud: DEBUG
+        integration: DEBUG
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: learning-spring-boot-comments
+          group: learning-spring-boot
+        output:
+          destination: learning-spring-boot-comments
+          group: learning-spring-boot
+
+endpoints:
+  httptrace:
+    enabled: true
+  loggers:
+    enabled: true
+  health:
+    enabled: true
+  autoconfig:
+    enabled: true
+  beans:
+    enabled: true
+  env:
+    enabled: true
+  info:
+    enabled: true
+  mappings:
+    enabled: true
+  metrics:
+    enabled: true
+
+management:
+  endpoints.enabled-by-default: true
+  info:
+    git:
+      mode: full
