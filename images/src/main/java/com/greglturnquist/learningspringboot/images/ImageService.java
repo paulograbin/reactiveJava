@@ -46,7 +46,7 @@ public class ImageService {
     public Flux<Image> findAllImages() {
         final Flux<Image> findAll = imageRepository.findAll();//.log("findAll");
 
-        meterRegistry.summary("images.returned").record(findAll.count().block());
+//        meterRegistry.summary("images.returned").record(findAll.count().block());
 
         return findAll;
     }

@@ -1,7 +1,7 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.0.M5'
-		springCloudVersion = 'Finchley.M3'
+		springBootVersion = '2.1.6.RELEASE'
+		springCloudVersion = 'Greenwich.SR2'
 	}
 	repositories {
 		mavenCentral()
@@ -14,7 +14,7 @@ buildscript {
 }
 
 plugins {
-	id "com.gorylenko.gradle-git-properties" version "1.4.17"
+//	id "com.gorylenko.gradle-git-properties" version "1.4.17"
 //	id "io.spring.dependency-management" version "1.0.6.RELEASE"
 }
 
@@ -48,22 +48,23 @@ configurations {
 // end::exclude-tomcat[
 
 dependencies {
-	compile("org.springframework.boot:spring-boot-devtools")
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.1.5.RELEASE'
-
-//	compile('org.springframework.boot:spring-boot-starter-amqp')
-	compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
-	compile('org.springframework.cloud:spring-cloud-stream-reactive')
-
 	compile('org.springframework.boot:spring-boot-starter-webflux')
 	compile('org.synchronoss.cloud:nio-multipart-parser:1.1.0')
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
 	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.1.5.RELEASE'
+	compile("org.springframework.boot:spring-boot-devtools")
+
+	compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
+	compile('org.springframework.cloud:spring-cloud-stream-reactive')
+	compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+	compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
+//	compile('org.springframework.cloud:spring-cloud-starter-config')
+
 	compile('org.projectlombok:lombok')
 
 	compile group: 'org.seleniumhq.selenium', name: 'htmlunit-driver', version: '2.35.1'
 	compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
-
 	compile 'com.google.guava:guava:27.0.1-jre'
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
