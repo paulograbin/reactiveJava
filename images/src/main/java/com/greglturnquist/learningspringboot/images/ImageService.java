@@ -91,8 +91,11 @@ public class ImageService {
                             .flatMap(file::transferTo)
                             .log("createImage-copy");
 
-                    return Mono.when(saveDatabaseImage, copyFile);
-                }).then();
+                    return Mono.when(saveDatabaseImage, copyFile)
+                            .log("createImage-when");
+                }).log("createImage-flatMap")
+                .then()
+                .log("createImage-done");
     }
 
     public Mono<Void> deleteImage(String filename) {

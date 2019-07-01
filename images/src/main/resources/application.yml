@@ -1,56 +1,7 @@
-logging:
-  level:
-    org:
-      springframework:
-        cloud: DEBUG
-        integration: DEBUG
-
 spring:
-  thymeleaf:
-    cache: false
-    prefix: file:///${resources.projectroot}/src/main/resources/templates/
-  devtools:
-    remote:
-      secret: learning-spring-boot
-  cloud:
-    stream:
-      bindings:
-        input:
-          destination: learning-spring-boot-comments
-          group: learning-spring-boot
-        output:
-          destination: learning-spring-boot-comments
-          group: learning-spring-boot
-
-
-
-management:
-  endpoint:
-    hystrix:
-      stream:
-        enabled: true
-    mappings:
-      enabled: true
-    health:
-      enabled: true
-    httptrace:
-      enabled: true
-    metrics:
-      enabled: true
-    bindings:
-      enabled: true
-    info:
-      enabled: true
-  endpoints:
-    enabled-by-default: true
-    web:
-      exposure:
-        include: health, metrics, info, hystrix, hystrix.stream
-
+  application:
+    name: images
 
 #  info:
 #    git:
 #      mode: full
-
-resources:
-  projectroot: "/Users/i841059/Desktop/reactiveJava"
