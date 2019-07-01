@@ -33,6 +33,8 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-turbine'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    compile('org.springframework.cloud:spring-cloud-starter-config')
+
     implementation 'org.springframework.boot:spring-boot-actuator'
 }
 
