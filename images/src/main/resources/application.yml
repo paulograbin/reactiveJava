@@ -22,32 +22,35 @@ spring:
           destination: learning-spring-boot-comments
           group: learning-spring-boot
 
-endpoints:
-  httptrace:
-    enabled: true
-  loggers:
-    enabled: true
-  health:
-    enabled: true
-  autoconfig:
-    enabled: true
-  beans:
-    enabled: true
-  env:
-    enabled: true
-  info:
-    enabled: true
-  mappings:
-    enabled: true
-  metrics:
-    enabled: true
 
 
 management:
-  endpoints.enabled-by-default: true
-  info:
-    git:
-      mode: full
+  endpoint:
+    hystrix:
+      stream:
+        enabled: true
+    mappings:
+      enabled: true
+    health:
+      enabled: true
+    httptrace:
+      enabled: true
+    metrics:
+      enabled: true
+    bindings:
+      enabled: true
+    info:
+      enabled: true
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: health, metrics, info, hystrix, hystrix.stream
+
+
+#  info:
+#    git:
+#      mode: full
 
 resources:
   projectroot: "/Users/i841059/Desktop/reactiveJava"
