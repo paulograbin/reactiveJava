@@ -1,36 +1,29 @@
 package com.greglturnquist.learningspringboot;
 
-import com.greglturnquist.learningspringboot.comments.CommentReaderRepository;
+import com.greglturnquist.learningspringboot.images.CommentHelper;
 import com.greglturnquist.learningspringboot.images.ImageService;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 
 @Controller
 public class HomeController {
 
-
-    private static final String BASE_PATH = "/images";
-    private static final String FILENAME = "{filename:.+}";
-
     private final ImageService imageService;
-    private final CommentReaderRepository commentRepository;
+    private final CommentHelper commentHelper;
 
-    public HomeController(ImageService imageService, CommentReaderRepository commentRepository) {
+
+    public HomeController(ImageService imageService, CommentHelper commentHelper) {
         this.imageService = imageService;
-        this.commentRepository = commentRepository;
+        this.commentHelper = commentHelper;
     }
-
 
     /**
      * addAttribute() lets us assign the image service's findAllImages() Flux to the
@@ -44,18 +37,15 @@ public class HomeController {
      */
     @GetMapping("/")
     public Mono<String> index(Model model) {
-        model.addAttribute("images", imageService.findAllImages()
-                .flatMap(image ->
-                        Mono.just(image)
-                        .zipWith(commentRepository.findByImageId(image.getId()).collectList())
-                )
-                .map(imageAndComments -> new HashMap<String, Object>(){{
-                    put("id", imageAndComments.getT1().getId());
-                    put("name", imageAndComments.getT1().getName());
-                    put("comments", imageAndComments.getT2());
-        }}));
+        model.addAttribute("images",
+                imageService.findAllImages()
+                        .map(image -> new HashMap<String, Object>() {{
+                            put("id", image.getId());
+                            put("name", image.getName());
+                            put("comments", commentHelper.getComments(image.getId()));
+                        }})
+        );
 
-        model.addAttribute("extra", "DevTools can also detect code changes too.");
         return Mono.just("index");
     }
 
@@ -64,52 +54,4 @@ public class HomeController {
     public String greeting(@RequestParam(required = false, defaultValue = "") String name) {
         return name.isEmpty() ? "Hey" : "Hey " + name + "!";
     }
-
-    @GetMapping(value = BASE_PATH + "/" + FILENAME + "/raw", produces = MediaType.IMAGE_JPEG_VALUE)
-    @ResponseBody
-    public Mono<ResponseEntity<?>> oneRawImage(@PathVariable String filename) {
-        return imageService.findOneImage(filename)
-                .map(resource -> {
-                    try {
-                        return ResponseEntity.ok()
-                                .contentLength(resource.contentLength())
-                                .body(new InputStreamResource(
-                                        resource.getInputStream()));
-                    } catch (IOException e) {
-                        return ResponseEntity.badRequest()
-                                .body("Couldn't find " + filename + " => " + e.getMessage());
-                    }
-                });
-    }
-
-    /**
-     *
-     * A collection of incoming FilePart objects is represented as a Flux
-     * The flux of files is handed directly to the image service to be processed
-     * .then() indicates that once the method is complete, it will then return a
-     * redirect:/ directive (wrapped in a Mono), issuing an HTML redirect to /
-     *
-     */
-    @PostMapping(value = BASE_PATH)
-    public Mono<String> createFile(@RequestParam(name = "file") Flux<FilePart> files) {
-        return imageService.createImage(files)
-                .then(Mono.just("redirect:/"));
-    }
-
-    /**
-     * Using Spring's @DeleteMapping annotation, this method is ready for HTTP DELETE
-     * operations
-     * It's keyed to the same BASE_PATH + "/" + FILENAME pattern
-     * It taps the image service's deleteImage() method
-     * It uses then() to wait until the delete is done before returning back a monowrapped redirect:/ directive
-     *
-     * @param filename
-     * @return
-     */
-    @DeleteMapping(BASE_PATH + "/" + FILENAME)
-    public Mono<String> deleteFile(@PathVariable String filename) {
-        return imageService.deleteImage(filename)
-                .then(Mono.just("redirect:/"));
-    }
-
 }
