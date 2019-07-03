@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -19,7 +18,6 @@ import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 
 
-@Controller
 /**
  * @EnableBinding(Source.class) flags this app as a source for new events. Spring
  * Cloud Stream uses this annotation to signal the creation of channels, which, in
@@ -67,7 +65,6 @@ public class CommentController {
 
                         return Mono.just(ResponseEntity.noContent().build());
                     });
-
         } else {
             return Mono.just(ResponseEntity.noContent().build());
         }
