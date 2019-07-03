@@ -84,32 +84,32 @@ public class UploadController {
     }
 
 
-
-    /**
-     * @RequestBody instructs Spring to fetch data from the HTTP request body.
-     * The container for our incoming data is another Flux of Image objects.
-     * To consume the data, we map over it. In this case, we simply log it and pass the
-     * original Image onto the next step of our flow.
-     * To wrap this logging operation with a promise, we invoke Flux.then(), which
-     * gives us Mono<Void>. Spring WebFlux will make good on this promise,
-     * subscribing to the results when the client makes a request.
-     *
-     * Whether we send a single JSON item or an array of JSON items, Spring
-     * WebFlux maps both onto Reactor's Flux with no issue. In classic Spring
-     * MVC, we'd have to choose either Image or List<Image> and encode things
-     * properly or write two handlers.
-     *
-     *
-     */
-    @PostMapping("/images2")
-    Mono<Void> create(@RequestBody Flux<Image> images) {
-        return images
-                .map(image -> {
-                    log.info("We'll save " + image + " to a Reactive database soon!");
-                    return image;
-                })
-                .then();
-    }
+//
+//    /**
+//     * @RequestBody instructs Spring to fetch data from the HTTP request body.
+//     * The container for our incoming data is another Flux of Image objects.
+//     * To consume the data, we map over it. In this case, we simply log it and pass the
+//     * original Image onto the next step of our flow.
+//     * To wrap this logging operation with a promise, we invoke Flux.then(), which
+//     * gives us Mono<Void>. Spring WebFlux will make good on this promise,
+//     * subscribing to the results when the client makes a request.
+//     *
+//     * Whether we send a single JSON item or an array of JSON items, Spring
+//     * WebFlux maps both onto Reactor's Flux with no issue. In classic Spring
+//     * MVC, we'd have to choose either Image or List<Image> and encode things
+//     * properly or write two handlers.
+//     *
+//     *
+//     */
+//    @PostMapping("/images2")
+//    Mono<Void> create(@RequestBody Flux<Image> images) {
+//        return images
+//                .map(image -> {
+//                    log.info("We'll save " + image + " to a Reactive database soon!");
+//                    return image;
+//                })
+//                .then();
+//    }
 
     /**
      * Using Spring's @DeleteMapping annotation, this method is ready for HTTP DELETE
