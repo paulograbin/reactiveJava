@@ -33,7 +33,7 @@
                 </td>
                 <td>
                     <form th:method="delete" th:action="@{'/images/' + ${image.name}}">
-                        <input type="submit" value="Delete">
+                        <input type="submit" th:value="Delete">
                     </form>
                 </td>
                 <td>
