@@ -37,10 +37,8 @@
                     </form>
                 </td>
                 <td>
-                    <ul>
-                        <li th:each="comment : ${image.comments}"
-                            th:text="${comment.comment}">
-                        </li>
+                    <ul th:id="'comments-' + ${image.id}">
+                        <li th:each="comment : ${image.comments}" th:text="${comment.comment}"></li>
                     </ul>
                 </td>
                 <td>
