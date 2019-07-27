@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Learning Sprint Boot: Spring-a-Gram</title>
+    <link rel="stylesheet" href="/main.css"/>
+</head>
+<body>
+
+<h1>Learning Spring Boot - 2nd Edition</h1>
+<h4 th:text="${extra}"></h4>
+
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Image ID</th>
+            <th>Comment ID</th>
+            <th>Text</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <th:block th:each="comment : ${comments}">
+            <tr th:id="'tr-' + ${comment.id}">
+                <td th:text="${comment.imageId}"/>
+                <td th:text="${comment.id}"/>
+                <td th:text="${comment.comment}"/>
+                <td>
+                    <button th:id="${comment.id}" type="button" class="delete">Delete</button>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+
+
+</div>
+</body>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    (function () {
+
+        document.querySelectorAll('button.delete')
+            .forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('DELETE', '/comment/delete/' + this.id, true);
+                    xhr.send();
+
+                    console.log('tr-' + this.id)
+                    var element = document.getElementById('tr-' + this.id);
+                    element.style.display = "none";
+                });
+            });
+    })();
+    /*]]>*/
+</script>
+
+</html>
