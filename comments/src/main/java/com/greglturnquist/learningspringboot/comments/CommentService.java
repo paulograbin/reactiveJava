@@ -1,6 +1,8 @@
 package com.greglturnquist.learningspringboot.comments;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
@@ -15,7 +17,10 @@ import reactor.core.publisher.Mono;
 @EnableBinding(Processor.class)
 public class CommentService {
 
+    private final static Logger log = LoggerFactory.getLogger(CommentService.class);
+
     private CommentRepository commentRepository;
+
     private final MeterRegistry meterRegistry;
 
     public CommentService(CommentRepository commentRepository, MeterRegistry meterRegistry) {
@@ -25,13 +30,25 @@ public class CommentService {
 
     @StreamListener
     @Output(Processor.OUTPUT)
-    public Flux<Void> save(@Input(Processor.INPUT) Flux<Comment> newComments) {
-        return commentRepository.saveAll(newComments)
-                .flatMap(comment -> {
+    public Flux<Comment> save(@Input(Processor.INPUT) Flux<Comment> newComments) {
+        return commentRepository
+                .saveAll(newComments)
+                .map(comment -> {
+                    log.info("Saving new comment " + comment);
                     meterRegistry.counter("comments.consumed", "imageId", comment.getImageId())
                             .increment();
 
-                    return Mono.empty();
+                    return comment;
                 });
+    }
+
+    public Flux<Comment> findAllComments() {
+        return commentRepository.findAll();
+    }
+
+    public Mono<Void> deleteCommentByID(String commentId) {
+        System.out.println("Service - Deleting comment " + commentId);
+
+        return commentRepository.deleteCommentById(commentId).log("Service - deleting " + commentId).then();
     }
 }

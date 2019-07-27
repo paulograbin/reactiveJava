@@ -7,6 +7,12 @@ import reactor.core.publisher.Mono;
 
 public interface CommentRepository extends Repository<Comment, String> {
 
+    Mono<Integer> count();
+
+    Mono<Boolean> deleteAllByImageId(String imageId);
+
+    Mono<Boolean> deleteCommentById(String commentId);
+
     Flux<Comment> findAll();
 
     Mono<Comment> save(Comment newComment);
