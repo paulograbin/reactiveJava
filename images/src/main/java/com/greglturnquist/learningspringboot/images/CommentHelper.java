@@ -64,7 +64,7 @@ public class CommentHelper {
     }
 
     public List<Comment> defaultComments(String imageId) {
-        System.out.println("Default comments for image " + imageId);
+        System.out.println("Returning fallback comments for image " + imageId);
 
 //        return Collections.singletonList(new Comment("a", "b", "c"));
         return Collections.emptyList();
