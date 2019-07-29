@@ -7,17 +7,17 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.FileSystemUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
+
+import static org.springframework.util.FileCopyUtils.copy;
 
 
 @Service
@@ -119,17 +119,21 @@ public class ImageService {
     @Bean
     CommandLineRunner setUp() {
         return args -> {
-            FileSystemUtils.deleteRecursively(new File(UPLOAD_ROOT));
-            Files.createDirectory(Paths.get(UPLOAD_ROOT));
-
-            FileCopyUtils.copy("Test file",
-                    new FileWriter(UPLOAD_ROOT + "/learning-spring-boot-cover.jpg"));
-
-            FileCopyUtils.copy("Test file2",
-                    new FileWriter(UPLOAD_ROOT + "/learning-spring-boot-2nd-edition-cover.jpg"));
-
-            FileCopyUtils.copy("Test file3",
-                    new FileWriter(UPLOAD_ROOT + "/bazinga.png"));
+            copyResourceToUploadDir("images/bazinga.jpg");
+            copyResourceToUploadDir("images/learning-spring-boot-cover.jpg");
+            copyResourceToUploadDir("images/learning-spring-boot-2nd-edition-cover.jpg");
+            copyResourceToUploadDir("images/bazinga has ended.jpg");
         };
+    }
+
+    private void copyResourceToUploadDir(final String resourceFile) throws IOException {
+        final Resource resource = resourceLoader.getResource("classpath:" + resourceFile);
+
+        final File destinationFile = new File(UPLOAD_ROOT + "/" + resource.getFile().getName());
+        if(!destinationFile.exists()) {
+            Files.createFile(destinationFile.toPath());
+        }
+
+        copy(resource.getInputStream(), new FileOutputStream(destinationFile));
     }
 }
