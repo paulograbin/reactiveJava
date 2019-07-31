@@ -28,7 +28,7 @@
                 <td th:text="${comment.id}"/>
                 <td th:text="${comment.comment}"/>
                 <td>
-                    <button th:id="${comment.id}" type="button" class="delete">Delete</button>
+                    <button th:id="${comment.id}" type="button" class="deleteComment">Delete</button>
                 </td>
             </tr>
         </th:block>
@@ -43,7 +43,7 @@
     /*<![CDATA[*/
     (function () {
 
-        document.querySelectorAll('button.delete')
+        document.querySelectorAll('button.deleteComment')
             .forEach(function (button) {
                 button.addEventListener('click', function () {
                     var xhr = new XMLHttpRequest();
