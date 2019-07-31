@@ -29,6 +29,7 @@
                 <td th:text="${comment.comment}"/>
                 <td>
                     <button th:id="${comment.id}" type="button" class="deleteComment">Delete</button>
+                    <button th:id="${comment.imageId}" type="button" class="deleteImage">Delete all from image</button>
                 </td>
             </tr>
         </th:block>
@@ -55,8 +56,33 @@
                     element.style.display = "none";
                 });
             });
+
+        document.querySelectorAll('button.deleteImage')
+            .forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var imageId = this.id;
+
+                    console.log("Deleting every comment on image", imageId);
+
+                    $.ajax({
+                        method: 'DELETE',
+                        url: '/comment/' + imageId,
+                        success: function(result) {
+                            console.log("Deletou comments from image sucess");
+
+                            var elementsByClassName = document.getElementsByClassName('image-' + imageId);
+                            var arr = [].slice.call(elementsByClassName);
+
+                            arr.forEach(function (value) {
+                                value.style.display = "none";
+                            })
+                        }
+                    });
+                });
+            });
+
     })();
     /*]]>*/
 </script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
 </html>
