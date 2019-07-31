@@ -28,15 +28,13 @@
                 <td th:text="${#strings.substring(comment.id, #strings.length(comment.id)-6)}"/>
                 <td th:text="${comment.comment}"/>
                 <td>
-                    <button th:id="${comment.id}" type="button" class="deleteComment">Delete</button>
-                    <button th:id="${comment.imageId}" type="button" class="deleteImage">Delete all from image</button>
+                    <button th:id="${comment.id}" class="deleteComment">Delete</button>
+                    <button th:id="${comment.imageId}" class="deleteImage">Delete all from image</button>
                 </td>
             </tr>
         </th:block>
         </tbody>
     </table>
-
-
 </div>
 </body>
 
