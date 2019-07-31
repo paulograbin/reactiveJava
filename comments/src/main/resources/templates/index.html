@@ -25,7 +25,7 @@
         <th:block th:each="comment : ${comments}">
             <tr th:id="'tr-' + ${comment.id}" th:class="'image-' + ${comment.imageId}">
                 <td th:text="${comment.imageId}"/>
-                <td th:text="${comment.id}"/>
+                <td th:text="${#strings.substring(comment.id, #strings.length(comment.id)-6)}"/>
                 <td th:text="${comment.comment}"/>
                 <td>
                     <button th:id="${comment.id}" type="button" class="deleteComment">Delete</button>
