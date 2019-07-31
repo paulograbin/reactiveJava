@@ -45,30 +45,27 @@
     /*<![CDATA[*/
     (function () {
 
-        document.querySelectorAll('button.deleteComment')
-            .forEach(function (button) {
-                button.addEventListener('click', function () {
-                    var commentId = this.id
+        $("button.deleteComment").on("click", function () {
+            var commentId = this.id;
+            console.log("Clicked on button " + commentId);
 
-                    $.ajax({
-                        method: 'DELETE',
-                        url: '/comment/delete/' + commentId,
-                        success: function () {
-                            console.log("Success deleting comment " + commentId);
+            $.ajax({
+                method: 'DELETE',
+                url: '/comment/delete/' + commentId,
+                success: function () {
+                    console.log("Success deleting comment " + commentId);
 
-                            var element = document.getElementById('tr-' + commentId);
-                            element.style.display = "none";
-                        },
-                        error: function (error) {
-                            console.log("Error deleting comment" + commentId, error)
-                        },
-                        complete: function (result) {
-                            console.log("Finished deleting " + commentId)
-                            console.log(result)
-                        }
-                    });
-                });
+                    var element = document.getElementById('tr-' + commentId);
+                    element.style.display = "none";
+                },
+                error: function (error) {
+                    console.log("Error deleting comment" + commentId, error)
+                },
+                complete: function (result) {
+                    console.log("Finished deleting " + commentId)
+                }
             });
+        });
 
         document.querySelectorAll('button.deleteImage')
             .forEach(function (button) {
