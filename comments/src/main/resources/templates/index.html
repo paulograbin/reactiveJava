@@ -74,14 +74,9 @@
                 method: 'DELETE',
                 url: '/comment/' + imageId,
                 success: function (result) {
-                    console.log("Deletou comments from image sucess");
+                    console.log("Deleted comments from image success");
 
-                    var elementsByClassName = document.getElementsByClassName('image-' + imageId);
-                    var arr = [].slice.call(elementsByClassName);
-
-                    arr.forEach(function (value) {
-                        value.style.display = "none";
-                    })
+                    $(".image-" + imageId).hide();
                 },
                 complete: function (result) {
                     console.log("Finished deleting every comment on image " + imageId)
