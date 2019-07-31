@@ -32,6 +32,13 @@ public class CommentController {
         return commentService.deleteCommentByID(commentId);
     }
 
+    @GetMapping("/comment/{imageId}")
+    public Flux<Comment> getComments(@PathVariable String imageId) {
+        System.out.println("Returning comments for " + imageId);
+
+        return commentService.findByImageId(imageId);
+    }
+
     @GetMapping("/comment")
     public Flux<Comment> getAllComments() {
         System.out.println("Returning comments for all images");

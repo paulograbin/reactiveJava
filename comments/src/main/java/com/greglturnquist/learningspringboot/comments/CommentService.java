@@ -57,4 +57,8 @@ public class CommentService {
 
         return commentRepository.deleteAllByImageId(imageId).log("Service - deleting by image " + imageId).then();
     }
+
+    public Flux<Comment> findByImageId(String imageId) {
+        return commentRepository.findByImageId(imageId);
+    }
 }
