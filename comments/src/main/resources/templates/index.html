@@ -65,29 +65,29 @@
             });
         });
 
-        document.querySelectorAll('button.deleteImage')
-            .forEach(function (button) {
-                button.addEventListener('click', function () {
-                    var imageId = this.id;
+        $("button.deleteImage").on('click', function () {
+            var imageId = this.id;
 
-                    console.log("Deleting every comment on image", imageId);
+            console.log("Deleting every comment on image", imageId);
 
-                    $.ajax({
-                        method: 'DELETE',
-                        url: '/comment/' + imageId,
-                        success: function (result) {
-                            console.log("Deletou comments from image sucess");
+            $.ajax({
+                method: 'DELETE',
+                url: '/comment/' + imageId,
+                success: function (result) {
+                    console.log("Deletou comments from image sucess");
 
-                            var elementsByClassName = document.getElementsByClassName('image-' + imageId);
-                            var arr = [].slice.call(elementsByClassName);
+                    var elementsByClassName = document.getElementsByClassName('image-' + imageId);
+                    var arr = [].slice.call(elementsByClassName);
 
-                            arr.forEach(function (value) {
-                                value.style.display = "none";
-                            })
-                        }
-                    });
-                });
+                    arr.forEach(function (value) {
+                        value.style.display = "none";
+                    })
+                },
+                complete: function (result) {
+                    console.log("Finished deleting every comment on image " + imageId)
+                }
             });
+        });
 
     })();
     /*]]>*/
