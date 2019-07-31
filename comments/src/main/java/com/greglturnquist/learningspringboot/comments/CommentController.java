@@ -11,20 +11,18 @@ import reactor.core.publisher.Mono;
 @RestController
 public class CommentController {
 
-    private final CommentRepository repository;
     private final CommentService commentService;
 
-    public CommentController(CommentRepository repository, CommentService commentService) {
-        this.repository = repository;
+    public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
 
 
     @DeleteMapping("/comment/{imageId}")
-    public Mono<Boolean> deleteCommentsByImageId(@PathVariable String imageId) {
+    public Mono<Void> deleteCommentsByImageId(@PathVariable String imageId) {
         System.out.println("Deleting every comment of " + imageId);
 
-        return repository.deleteAllByImageId(imageId);
+        return commentService.deleteCommentsByImageId(imageId);
     }
 
     @DeleteMapping("/comment/delete/{commentId}")
@@ -34,24 +32,10 @@ public class CommentController {
         return commentService.deleteCommentByID(commentId);
     }
 
-    @GetMapping("/comment/count")
-    public Mono<Integer> countComments() {
-        System.out.println("Returning comment count");
-
-        return repository.count();
-    }
-
-    @GetMapping("/comment/{imageId}")
-    public Flux<Comment> getComments(@PathVariable String imageId) {
-        System.out.println("Returning comments for " + imageId);
-
-        return repository.findByImageId(imageId);
-    }
-
     @GetMapping("/comment")
     public Flux<Comment> getAllComments() {
         System.out.println("Returning comments for all images");
 
-        return repository.findAll();
+        return commentService.findAllComments();
     }
 }

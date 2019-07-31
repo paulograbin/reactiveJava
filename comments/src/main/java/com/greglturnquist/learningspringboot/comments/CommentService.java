@@ -51,4 +51,10 @@ public class CommentService {
 
         return commentRepository.deleteCommentById(commentId).log("Service - deleting " + commentId).then();
     }
+
+    public Mono<Void> deleteCommentsByImageId(String imageId) {
+        System.out.println("Service - Deleting commments by image id " + imageId);
+
+        return commentRepository.deleteAllByImageId(imageId).log("Service - deleting by image " + imageId).then();
+    }
 }
