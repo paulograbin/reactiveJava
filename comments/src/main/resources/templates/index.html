@@ -47,13 +47,25 @@
         document.querySelectorAll('button.deleteComment')
             .forEach(function (button) {
                 button.addEventListener('click', function () {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('DELETE', '/comment/delete/' + this.id, true);
-                    xhr.send();
+                    var commentId = this.id
 
-                    console.log('tr-' + this.id)
-                    var element = document.getElementById('tr-' + this.id);
-                    element.style.display = "none";
+                    $.ajax({
+                        method: 'DELETE',
+                        url: '/comment/delete/' + commentId,
+                        success: function () {
+                            console.log("Success deleting comment " + commentId);
+
+                            var element = document.getElementById('tr-' + commentId);
+                            element.style.display = "none";
+                        },
+                        error: function (error) {
+                            console.log("Error deleting comment" + commentId, error)
+                        },
+                        complete: function (result) {
+                            console.log("Finished deleting " + commentId)
+                            console.log(result)
+                        }
+                    });
                 });
             });
 
@@ -67,7 +79,7 @@
                     $.ajax({
                         method: 'DELETE',
                         url: '/comment/' + imageId,
-                        success: function(result) {
+                        success: function (result) {
                             console.log("Deletou comments from image sucess");
 
                             var elementsByClassName = document.getElementsByClassName('image-' + imageId);
