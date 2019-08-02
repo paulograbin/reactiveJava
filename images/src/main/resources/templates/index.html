@@ -22,10 +22,11 @@
                 <th>Add new comment</th>
             </tr>
         </thead>
+
         <tbody>
             <tr th:each="image : ${images}">
-                <td th:text="${image.id}"/>
                 <td th:text="${image.name}"/>
+                <td th:text="${image.id}"/>
                 <td>
                     <a th:href="@{'/images/' + ${image.name} + '/raw'}">
                         <img th:src="@{'/images/' + ${image.name} + '/raw'}" class="thumbnail"/>
@@ -55,6 +56,18 @@
         <p><input type="file" name="file"/> </p>
         <p><input type="submit" name="upload"/> </p>
     </form>
+
+
+    <div id="chatBox">
+        Greetings!
+        <br/>
+        <textarea id="chatDisplay" rows="10" cols="80" disabled="true"></textarea>
+        <br/>
+        <input id="chatInput" type="text" style="width: 500px" value=""/>
+        <br/>
+        <button id="chatButton">Send</button>
+        <br/>
+    </div>
 
 </div>
 </body>
