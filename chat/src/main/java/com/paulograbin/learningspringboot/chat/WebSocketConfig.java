@@ -41,15 +41,28 @@ public class WebSocketConfig {
      * certain other route handlers provided automatically by Spring Boot.
      */
 
+    /**
+     * Previously, this method only injected CommentService. Now we also inject
+     * InboundChatService as well as OutboundChatService. These are two services we must
+     * define based on the need to broker WebSocket messages between sessions.
+     * (Don't panic! We'll get to that real soon).
+     * We have two new routes added to the urlMap--/app/chatMessage.new and
+     * /topic/chatMessage.new--which we just saw used in the web layer.
+     * These same routes must also be added to our CORS policy.
+     */
     @Bean
-    public HandlerMapping webSocketMapping(CommentService commentService) {
+    public HandlerMapping webSocketMapping(CommentService commentService, InboundCharService inboundChatService, OutboundCharService outboundChatService) {
         Map<String, WebSocketHandler> urlMap = new HashMap<>();
         urlMap.put("/topic/comments.new", commentService);
+        urlMap.put("/app/chatMessage.new", inboundChatService);
+        urlMap.put("/topic/chatMessage.new", outboundChatService);
 
         Map<String, CorsConfiguration> corsConfigurationMap = new HashMap<>();
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("http://localhost:8080");
         corsConfigurationMap.put("/topic/comments.new", corsConfiguration);
+        corsConfigurationMap.put("/app/chatMessage.new", corsConfiguration);
+        corsConfigurationMap.put("/topic/chatMessage.new", corsConfiguration);
 
         SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();
         mapping.setOrder(10);
