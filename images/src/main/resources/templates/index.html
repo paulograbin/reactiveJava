@@ -143,10 +143,29 @@ on the comment's imageId.
 
         var socket = new WebSocket(
             'ws://localhost:8200/topic/comments.new');
+
+        /**
+         We start by creating a WebSocket connection at ws://localhost:8200/topic/comments.new
+
+         With a JavaScript WebSocket object assigned to our socket variable, we then
+         assign event handlers to onopen and onmessage.
+
+         The onopen handler is processed when a connection is first opened on the server.
+         In this case, it merely logs that we have connected.
+
+         The onmessage handler is processed everytime a message is issued from the
+         server. In this case, we log the event's data, parse it (assuming it's JSON),
+         construct an HTML LI, and append it to the page's already existing UL based
+         on the comment's imageId.
+         */
+        var socket = new WebSocket('ws://localhost:8200/topic/comments.new');
+        socket.onerror = function (event) {
+            console.log("Error opening connection to socket", event.target.url);
+        };
         socket.onopen = function (event) {
-            console.log('Connected to char service!');
+            console.log('Connected to chat service!');
             console.log(event);
-        }
+        };
 
         socket.onmessage = function (event) {
             console.log('Received ' + event.data + '!');
