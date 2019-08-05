@@ -175,17 +175,16 @@ on the comment's imageId.
         };
 
         socket.onmessage = function (event) {
-            console.log('Received ' + event.data + '!');
+            var comment = JSON.parse(event.data);
+            console.log('New comment ' + comment.id + ' posted on ' + comment.imageId + ' with content ' + comment.comment);
+
             var parsedMessage = JSON.parse(event.data);
 
             var ul = document.getElementById('comments-' + parsedMessage.imageId);
-
             var li = document.createElement('li');
             li.appendChild(document.createTextNode(parsedMessage.comment));
-
             ul.appendChild(li);
         }
-
     })();
     /*]]>*/
 </script>
