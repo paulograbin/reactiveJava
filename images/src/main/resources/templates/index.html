@@ -94,6 +94,9 @@ construct an HTML LI, and append it to the page's already existing UL based
 on the comment's imageId.
 
 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<!--The HTML <script> tag combined with th:inline="javascript" allows Thymeleaf to process it.-->
+<!--To avoid HTML parsing in various browsers as well as our IDE, the entire code is wrapped with CDATA tags.-->
 <script th:inline="javascript">
     /*<![CDATA[*/
     (function() {
