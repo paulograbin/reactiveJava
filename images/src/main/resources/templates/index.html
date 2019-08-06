@@ -101,16 +101,15 @@ on the comment's imageId.
     /*<![CDATA[*/
     (function() {
 
+        $('#connect').on('click', function () {
+            $('#connect').hide();
+            $('#disconnect').show();
 
-        document.getElementById('connect')
-            .addEventListener("click", function () {
-                document.getElementById('connect').style.display = 'none';
-                document.getElementById('disconnect').style.display = 'inline';
+            var userNameInput = $('#username');
 
-                var userName = document.getElementById('username');
-                console.log("username ", userName)
+            $('#chatBox').show();
+        });
 
-                document.getElementById('chatBox').style.display = 'inline';
             });
 
 
