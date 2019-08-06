@@ -101,6 +101,19 @@ on the comment's imageId.
     /*<![CDATA[*/
     (function() {
 
+
+        document.getElementById('connect')
+            .addEventListener("click", function () {
+                document.getElementById('connect').style.display = 'none';
+                document.getElementById('disconnect').style.display = 'inline';
+
+                var userName = document.getElementById('username');
+                console.log("username ", userName)
+
+                document.getElementById('chatBox').style.display = 'inline';
+            });
+
+
         /**
          * document.querySelectorAll('button.comment') uses a native JavaScript query
          selector to find all the HTML buttons that have the class comment.
