@@ -42,6 +42,10 @@ public class CommentService {
                 });
     }
 
+    public void saveComment(Comment comment) {
+        commentRepository.save(comment).subscribe();
+    }
+
     public Flux<Comment> findAllComments() {
         return commentRepository.findAll();
     }
