@@ -3,20 +3,13 @@ package com.greglturnquist.learningspringboot;
 import com.greglturnquist.learningspringboot.images.Image;
 import com.greglturnquist.learningspringboot.images.ImageRepository;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.test.context.junit4.SpringRunner;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(SpringRunner.class)
@@ -72,46 +65,46 @@ public class EmbeddedImageRepositoryTests {
      * meaning that it finished correctly.
      *
      */
-    @Test
-    public void findAllImagesShouldWork() {
-        final Flux<Image> all = imageRepository.findAll();
-
-        StepVerifier.create(all)
-                .recordWith(ArrayList::new)
-                .expectNextCount(4)
-                .consumeRecordedWith(results -> {
-                    assertThat(results).hasSize(4);
-
-                    assertThat(results)
-                            .extracting(Image::getName)
-                            .contains("learning-spring-boot-cover.jpg",
-                                    "learning-spring-boot-2nd-edition-cover.jpg",
-                                    "bazinga.jpg",
-                                    "bazinga has ended.jpg"
-                            );
-                })
-                .expectComplete()
-                .verify();
-    }
-
-    /**
-     * repository.findByName() is used to fetch one record
-     * We again use StepVerifier to create a subscriber for our Mono and then expect the
-     * next signal to come through, indicating that it was fetched
-     * Inside the lambda, we perform a couple of AssertJ assertions to verify the state
-     * of this Image
-     */
-    @Test
-    public void findByNameShouldWork() {
-        final Mono<Image> image = imageRepository.findByName("bazinga.png");
-
-        StepVerifier.create(image)
-                .expectNextMatches(results -> {
-
-                    assertThat(results.getName()).isEqualTo("bazinga.png");
-                    assertThat(results.getId()).isEqualTo("3");
-
-                    return true;
-                });
-    }
+//    @Test
+//    public void findAllImagesShouldWork() {
+//        final Flux<Image> all = imageRepository.findAll();
+//
+//        StepVerifier.create(all)
+//                .recordWith(ArrayList::new)
+//                .expectNextCount(4)
+//                .consumeRecordedWith(results -> {
+//                    assertThat(results).hasSize(4);
+//
+//                    assertThat(results)
+//                            .extracting(Image::getName)
+//                            .contains("learning-spring-boot-cover.jpg",
+//                                    "learning-spring-boot-2nd-edition-cover.jpg",
+//                                    "bazinga.jpg",
+//                                    "bazinga has ended.jpg"
+//                            );
+//                })
+//                .expectComplete()
+//                .verify();
+//    }
+//
+//    /**
+//     * repository.findByName() is used to fetch one record
+//     * We again use StepVerifier to create a subscriber for our Mono and then expect the
+//     * next signal to come through, indicating that it was fetched
+//     * Inside the lambda, we perform a couple of AssertJ assertions to verify the state
+//     * of this Image
+//     */
+//    @Test
+//    public void findByNameShouldWork() {
+//        final Mono<Image> image = imageRepository.findByName("bazinga.png");
+//
+//        StepVerifier.create(image)
+//                .expectNextMatches(results -> {
+//
+//                    assertThat(results.getName()).isEqualTo("bazinga.png");
+//                    assertThat(results.getId()).isEqualTo("3");
+//
+//                    return true;
+//                });
+//    }
 }
