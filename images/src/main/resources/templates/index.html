@@ -101,18 +101,6 @@ on the comment's imageId.
     /*<![CDATA[*/
     (function() {
 
-        $('#connect').on('click', function () {
-            $('#connect').hide();
-            $('#disconnect').show();
-
-            var userNameInput = $('#username');
-
-            $('#chatBox').show();
-        });
-
-            });
-
-
         /**
          * document.querySelectorAll('button.comment') uses a native JavaScript query
          selector to find all the HTML buttons that have the class comment.
@@ -159,9 +147,6 @@ on the comment's imageId.
                     comment.value = '';
                 });
             });
-
-        var socket = new WebSocket(
-            'ws://localhost:8200/topic/comments.new');
 
         /**
          We start by creating a WebSocket connection at ws://localhost:8200/topic/comments.new
