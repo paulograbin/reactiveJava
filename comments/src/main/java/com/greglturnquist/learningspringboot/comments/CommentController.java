@@ -1,9 +1,6 @@
 package com.greglturnquist.learningspringboot.comments;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -44,5 +41,10 @@ public class CommentController {
         System.out.println("Returning comments for all images");
 
         return commentService.findAllComments();
+    }
+
+    @PostMapping("/comment")
+    public void saveNewComment(@RequestBody Comment newComment) {
+        commentService.saveComment(newComment);
     }
 }
