@@ -30,6 +30,7 @@ public class InitDatabase {
             mongoOperations.insert(new Image("3", "bazinga.jpg"));
             mongoOperations.insert(new Image("4", "bazinga has ended.jpg"));
 
+            System.out.println("Loading default images to DB...");
             mongoOperations.findAll(Image.class).forEach(image -> System.out.println(image.toString()));
         };
     }
