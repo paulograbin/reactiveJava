@@ -1,6 +1,7 @@
 package com.greglturnquist.learningspringboot;
 
 import com.greglturnquist.learningspringboot.images.ImageRepository;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
@@ -12,6 +13,7 @@ import javax.annotation.Resource;
 
 @RunWith(SpringRunner.class)
 @DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
+@Ignore
 public class LiveImageRepositoryTests {
 
     @Resource
