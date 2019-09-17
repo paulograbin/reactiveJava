@@ -102,14 +102,6 @@ on the comment's imageId.
     (function() {
 
         /**
-         * document.querySelectorAll('button.comment') uses a native JavaScript query
-         selector to find all the HTML buttons that have the class comment.
-         Iterating over each button, an event listener is added, responding to the click
-         events.
-
-         When a click is received, it fetches the corresponding comment input.
-         Then it fashions an XMLHttpRequest object, opening a POST operation set for
-         asynchronous communications.
          With Thymeleaf's JavaScript support, it will plug in the URL for @{'/comments'}
          upon rendering.
          Then it constructs a FormData, and loads the same fields as the previous chapter
