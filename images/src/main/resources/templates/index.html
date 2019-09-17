@@ -110,26 +110,25 @@ on the comment's imageId.
          they are ignored.
          Finally, it clears out the comment input's entry box.
          */
-
         document.querySelectorAll('button.comment')
             .forEach(function (button) {
                 button.addEventListener('click', function () {
-                    let comment = document.getElementById('comment-' + button.id);
-                    console.log($("#comment-" + button.id).value);
+                    var comment = document.getElementById('comment-' + button.id);
+                    console.log("Text for comment:", $("#comment-" + button.id).val());
 
                     var commentMessage = {
                         'comment': comment.value,
                         'imageId': button.id
                     };
 
-                    console.log("Shooting a new comment with: " + commentMessage.imageId + " and " + commentMessage.comment);
+                    console.log("Shooting a new comment for image %s with text %s ", commentMessage.imageId, commentMessage.comment);
 
                     $.ajax({
                         method: 'POST',
                         url: /*[[@{'/comments'}]]*/'',
                         data: commentMessage,
                         success: function() {
-                            console.log('Comment sent sucessfully!');
+                            console.log('Comment sent successfully!');
                         },
                         error: function(e) {
                             console.log('error', e);
@@ -165,7 +164,7 @@ on the comment's imageId.
 
         socket.onmessage = function (event) {
             var comment = JSON.parse(event.data);
-            console.log('New comment ' + comment.id + ' posted on ' + comment.imageId + ' with content ' + comment.comment);
+            console.log('New comment %s posted on %s with content "%s"', comment.id, comment.imageId, comment.comment);
 
             var parsedMessage = JSON.parse(event.data);
 
