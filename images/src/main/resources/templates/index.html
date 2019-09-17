@@ -173,6 +173,35 @@ on the comment's imageId.
             li.appendChild(document.createTextNode(parsedMessage.comment));
             ul.appendChild(li);
         }
+
+
+        /**
+         *
+         *
+         *  CHAT MESSAGES
+         *
+         **/
+        var outboundChatMessages = new WebSocket('ws://localhost:8200/app/chatMessage.new');
+        // Post new chat messges
+        outboundChatMessages.onopen = function (ev) {
+            $("#chatButton").click(function() {
+                var chatInput = $("#chatInput");
+                console.log("Publising '%s'", chatInput.val());
+                outboundChatMessages.send(chatInput.val());
+                chatInput.val("");
+                chatInput.focus();
+            });
+        };
+
+        var inboundChatMessages = new WebSocket('ws://localhost:8200/topic/chatMessage.new');
+        // Listen for new chat messages
+        inboundChatMessages.onmessage = function (event) {
+            console.log("Received '%s'", event.data);
+            var chatDisplay = $("#chatDisplay");
+            chatDisplay.val(chatDisplay.val() + event.data + '\n');
+        };
+
+
     })();
     /*]]>*/
 </script>
