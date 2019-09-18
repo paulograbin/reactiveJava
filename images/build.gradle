@@ -1,7 +1,6 @@
 buildscript {
 	ext {
 		springBootVersion = '2.2.0.M6'
-		springCloudVersion = 'Hoxton.M2'
 	}
 	repositories {
 		mavenCentral()
@@ -30,7 +29,13 @@ apply plugin: 'io.spring.dependency-management'
 group = 'com.greglturnquist.learningspringboot.images'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
+
+configurations {
+	all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+//	all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-validation'
+	all*.exclude group: 'org.springframework', module: 'spring-webmvc'
+}
+// end::exclude-tomcat[
 
 repositories {
 	mavenCentral()
@@ -40,12 +45,9 @@ repositories {
 	maven { url "https://dl.bintray.com/rabbitmq/maven-milestones/" }
 }
 
-configurations {
-	all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
-//	all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-validation'
-	all*.exclude group: 'org.springframework', module: 'spring-webmvc'
+ext {
+	set('springCloudVersion', "Hoxton.M2")
 }
-// end::exclude-tomcat[
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-webflux')
