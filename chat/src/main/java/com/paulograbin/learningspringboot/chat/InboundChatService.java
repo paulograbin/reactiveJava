@@ -3,7 +3,6 @@ package com.paulograbin.learningspringboot.chat;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
 import reactor.core.publisher.Mono;
@@ -11,35 +10,58 @@ import reactor.core.publisher.Mono;
 
 @Service
 @EnableBinding(ChatServiceStreams.class)
-public class InboundCharService implements WebSocketHandler {
+public class InboundChatService extends UserParsingHandshakeHandler {
 
     private final ChatServiceStreams chatServiceStreams;
 
-    public InboundCharService(ChatServiceStreams chatServiceStreams) {
+    public InboundChatService(ChatServiceStreams chatServiceStreams) {
         this.chatServiceStreams = chatServiceStreams;
     }
 
     @Override
-    public Mono<Void> handle(WebSocketSession session) {
+    protected Mono<Void> handleInternal(WebSocketSession session) {
         return session
                 .receive()
-                .log("inbound-incoming-chat-message")
+                .log(getUser(session.getId()) + "-inbound-incoming-chat-message")
                 .map(WebSocketMessage::getPayloadAsText)
-                .log("inbound-mark-with-session-id")
-                .map(s -> session.getId() + ": " + s)
-                .flatMap(this::broadcast)
-                .log("inbound-broadcast-to-broker")
+                .log(getUser(session.getId()) + "-inbound-convert-to-text")
+                .flatMap(message ->
+                        broadcast(message, getUser(session.getId())))
+                .log(getUser(session.getId()) + "inbound-broadcast-to-broker")
                 .then();
     }
 
-    private Mono<?> broadcast(String message) {
+//    @Override
+//    public Mono<Void> handle(WebSocketSession session) {
+//        return session
+//                .receive()
+//                .log("inbound-incoming-chat-message")
+//                .map(WebSocketMessage::getPayloadAsText)
+//                .log("inbound-mark-with-session-id")
+//                .map(s -> session.getId() + ": " + s)
+//                .flatMap(this::broadcast)
+//                .log("inbound-broadcast-to-broker")
+//                .then();
+//    }
+
+        private Mono<?> broadcast(String message, String user) {
         return Mono.fromRunnable(() -> {
             chatServiceStreams.clientToBroker().send(
                     MessageBuilder
                             .withPayload(message)
+                            .setHeader(ChatServiceStreams.USER_HEADER, user)
                             .build());
         });
     }
+
+//    private Mono<?> broadcast(String message) {
+//        return Mono.fromRunnable(() -> {
+//            chatServiceStreams.clientToBroker().send(
+//                    MessageBuilder
+//                            .withPayload(message)
+//                            .build());
+//        });
+//    }
 
     /**
      * @Service marks it as a Spring service that should launch automatically thanks to
