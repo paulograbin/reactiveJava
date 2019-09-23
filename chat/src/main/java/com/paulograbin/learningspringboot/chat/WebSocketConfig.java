@@ -51,7 +51,7 @@ public class WebSocketConfig {
      * These same routes must also be added to our CORS policy.
      */
     @Bean
-    public HandlerMapping webSocketMapping(CommentService commentService, InboundCharService inboundChatService, OutboundCharService outboundChatService) {
+    public HandlerMapping webSocketMapping(CommentService commentService, InboundChatService inboundChatService, OutboundChatService outboundChatService) {
         Map<String, WebSocketHandler> urlMap = new HashMap<>();
         urlMap.put("/topic/comments.new", commentService);
         urlMap.put("/app/chatMessage.new", inboundChatService);

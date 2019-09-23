@@ -30,6 +30,8 @@ public interface ChatServiceStreams {
     String CLIENT_TO_BROKER = "clientToBroker";
     String BROKER_TO_CLIENT = "brokerToClient";
 
+    String USER_HEADER = "User";
+
     @Input(BROKER_TO_CLIENT)
     SubscribableChannel brokerToClient();
 

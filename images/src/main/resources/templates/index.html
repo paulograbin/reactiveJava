@@ -101,6 +101,76 @@ on the comment's imageId.
     /*<![CDATA[*/
     (function() {
 
+
+        var newComments = null;
+        var outboundChatMessages = null;
+        var inboundChatMessages = null;
+
+        $("#connect").click(function() {
+            document.getElementById('connect').style.display = 'none';
+            document.getElementById('disconnect').style.display = 'inline';
+
+            var usernameInput = $("#username");
+            console.log("Username: %s", usernameInput);
+            document.getElementById('chatBox').style.display = 'inline';
+
+            newComments = new WebSocket('ws://localhost:8200/topic/comments.new?user' + usernameInput.val());
+            newComments.onmessage = function (event) {
+                console.log("Received %s!", event.data);
+                var parsedMessage = JSON.parse(event.data);
+                var ul = document.getElementById("comments-" + parsedMessage.imageId);
+                var li = document.createElement("li");
+                li.appendChild(document.createTextNode(parsedMessage.comment));
+
+                ul.appendChild(li);
+            };
+
+            outboundChatMessages = new WebSocket('ws://localhost:8200/app/chatMessage.new?user=' + usernameInput.val());
+            // Post new chat messges
+            outboundChatMessages.onopen = function (ev) {
+                $("#chatButton").click(function() {
+                    var chatInput = $("#chatInput");
+                    console.log("Publising '%s'", chatInput.val());
+                    outboundChatMessages.send(chatInput.val());
+                    chatInput.val("");
+                    chatInput.focus();
+                });
+            };
+
+            inboundChatMessages = new WebSocket('ws://localhost:8200/topic/chatMessage.new?user=' + usernameInput.val());
+            // Listen for new chat messages
+            inboundChatMessages.onmessage = function (event) {
+                console.log("Received '%s'", event.data);
+                var chatDisplay = $("#chatDisplay");
+                chatDisplay.val(chatDisplay.val() + event.data + '\n');
+            };
+        });
+
+        $("#disconnect").click(function () {
+            document.getElementById('connect').style.display = 'inline';
+            document.getElementById('disconnect').style.display = 'none';
+            document.getElementById('chatBox').style.display = 'none';
+
+            if (newComments != null) {
+                newComments.close();
+            }
+            if (outboundChatMessages != null) {
+                outboundChatMessages.close();
+            }
+            if (inboundChatMessages != null) {
+                inboundChatMessages.close();
+            }
+        });
+
+
+
+
+
+
+
+
+
+
         /**
          With Thymeleaf's JavaScript support, it will plug in the URL for @{'/comments'}
          upon rendering.
@@ -175,31 +245,7 @@ on the comment's imageId.
         }
 
 
-        /**
-         *
-         *
-         *  CHAT MESSAGES
-         *
-         **/
-        var outboundChatMessages = new WebSocket('ws://localhost:8200/app/chatMessage.new');
-        // Post new chat messges
-        outboundChatMessages.onopen = function (ev) {
-            $("#chatButton").click(function() {
-                var chatInput = $("#chatInput");
-                console.log("Publising '%s'", chatInput.val());
-                outboundChatMessages.send(chatInput.val());
-                chatInput.val("");
-                chatInput.focus();
-            });
-        };
 
-        var inboundChatMessages = new WebSocket('ws://localhost:8200/topic/chatMessage.new');
-        // Listen for new chat messages
-        inboundChatMessages.onmessage = function (event) {
-            console.log("Received '%s'", event.data);
-            var chatDisplay = $("#chatDisplay");
-            chatDisplay.val(chatDisplay.val() + event.data + '\n');
-        };
 
 
     })();
